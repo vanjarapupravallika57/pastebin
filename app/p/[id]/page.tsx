@@ -26,37 +26,24 @@ export default async function PastePage({
     }
   }
 
-  /* ------------------ Build correct base URL ------------------ */
-  const headersList = headers();
 
-  const host =
-    process.env.NODE_ENV === "development"
-      ? headersList.get("host")
-      : process.env.VERCEL_URL;
 
-  if (!host) {
-    notFound();
-  }
-
-  const protocol =
-    process.env.NODE_ENV === "development" ? "http" : "https";
-
-  /* ------------------ Fetch paste via API ------------------ */
   const res = await fetch(
-    `${protocol}://${host}/api/pastes/${id}`,
-    {
-      cache: "no-store",
-      headers: customNow
-        ? { "x-test-now-ms": customNow.toString() }
-        : {},
-    }
-  );
-
-  if (!res.ok) {
-    notFound();
+  `/api/pastes/${id}`,
+  {
+    cache: "no-store",
+    headers: customNow
+      ? { "x-test-now-ms": customNow.toString() }
+      : {},
   }
+);
 
-  const paste = await res.json();
+if (!res.ok) {
+  notFound();
+}
+
+const paste = await res.json();
+
 
   /* ------------------ UI helpers ------------------ */
   const timeRemaining = paste.expires_at
