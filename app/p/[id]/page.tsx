@@ -24,11 +24,25 @@ export default async function PastePage({
       }
   }
 
-  const paste = await getPaste(id, customNow);
+  // const paste = await getPaste(id, customNow);
 
-  if (!paste) {
-    notFound();
-  }
+  // if (!paste) {
+  //   notFound();
+  // }
+  const host = headers().get("host");
+const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+
+const res = await fetch(
+  `${protocol}://${host}/api/pastes/${id}`,
+  { cache: "no-store" }
+);
+
+if (!res.ok) {
+  notFound();
+}
+
+const paste = await res.json();
+
 
   // Calculate relative expiration string if it exists
   const timeRemaining = paste.expires_at
