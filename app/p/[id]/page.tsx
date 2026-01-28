@@ -29,8 +29,18 @@ export default async function PastePage({
   // if (!paste) {
   //   notFound();
   // }
-  const host = headers().get("host");
-const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+//   const host = headers().get("host");
+// const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+  const headersList = headers();
+
+const host =
+  process.env.NODE_ENV === "development"
+    ? headersList.get("host")
+    : process.env.VERCEL_URL;
+
+const protocol =
+  process.env.NODE_ENV === "development" ? "http" : "https";
+
 
 const res = await fetch(
   `${protocol}://${host}/api/pastes/${id}`,
