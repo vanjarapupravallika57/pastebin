@@ -30,9 +30,18 @@ export default async function PastePage({
     headersList.get("x-forwarded-host") ??
     headersList.get("host");
 
+  // if (!host) {
+  //   notFound();
+  // }
   if (!host) {
-    notFound();
-  }
+  return (
+    <div style={{ padding: "2rem" }}>
+      <h2>Paste not found or expired</h2>
+      <p>This paste may have expired or exceeded view limit.</p>
+    </div>
+  );
+}
+
 
   const origin = `${protocol}://${host}`;
 
